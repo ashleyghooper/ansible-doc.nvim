@@ -32,11 +32,13 @@ end
 
 function render_doc(params)
 	local name = params.fargs[1]
-	local doc = ansible_doc.doc(name)
+	local data = ansible_doc.doc(name)
 	local bufname = string.format('ansibledoc://%s', name)
 	local buffer, window
 	-- Whether the document is getting opened for the first time
 	local first_time = false
+
+	data.doc.plugin_name = name
 
 	-- Find previously opened buffer or create a new one
 	for _, buf in ipairs(api.nvim_list_bufs()) do
@@ -74,7 +76,7 @@ function render_doc(params)
 
 	if first_time then
 		api.nvim_set_option_value('filetype', filetype, {buf=buffer})
-		ansible_doc.render(buffer, doc)
+		ansible_doc.render(buffer, data)
 		api.nvim_set_option_value('modifiable', false, {buf=buffer})
 		api.nvim_set_option_value('readonly', true, {buf=buffer})
 		vim.keymap.set('n', 'K', follow_xref, {buffer = buffer, remap = false})

@@ -3,10 +3,12 @@ local put = require('ansible-doc.format.util').put
 
 local function put_item(bufnr, item)
 	local module = item.module
-	local parts = vim.split(module, '.', {plain=true})
-	-- NOTE: Instead of a hyperlink we should have an interactive reference
-	-- where the user can press 'K' to jump to that documentation entry.
-	put(bufnr, {string.format('    • M(%s)', module)})
+	if module then
+		local parts = vim.split(module, '.', {plain=true})
+		-- NOTE: Instead of a hyperlink we should have an interactive reference
+		-- where the user can press 'K' to jump to that documentation entry.
+		put(bufnr, {string.format('    • M(%s)', module)})
+	end
 end
 
 
